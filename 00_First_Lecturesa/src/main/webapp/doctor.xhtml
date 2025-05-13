@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Doctors</title>
+    <link rel="stylesheet" type="text/css" href="#{request.contextPath}/CSS/style.css"/>
+</h:head>
+<h:body>
+    <h2>Add or Edit Doctor</h2>
+    <h:form>
+        <h:panelGrid columns="2">
+            <h:outputLabel for="name" value="Name:" />
+            <h:inputText id="name" value="#{doctorJSFBean.doctor.name}" required="true" />
+
+            <h:outputLabel for="surname" value="Surname:" />
+            <h:inputText id="surname" value="#{doctorJSFBean.doctor.surname}" required="true" />
+
+            <h:outputLabel for="email" value="Email:" />
+            <h:inputText id="email" value="#{doctorJSFBean.doctor.email}" required="true" />
+
+            <h:outputLabel for="maxPatients" value="Max Patients:" />
+            <h:inputText id="maxPatients" value="#{doctorJSFBean.doctor.maxPatients}" required="true" />
+        </h:panelGrid>
+
+        <h:commandButton value="Save Doctor" action="#{doctorJSFBean.saveDoctor}" />
+    </h:form>
+
+    <p><h:outputLink value="#{request.contextPath}">Back to home</h:outputLink></p>
+
+    <h2>List of Doctors</h2>
+    <h:form>
+        <h:dataTable value="#{patientJSFBean.allDoctors}" var="doctor" border="1">
+            <h:column>
+                <f:facet name="header">ID</f:facet>
+                #{doctor.id}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Name</f:facet>
+                #{doctor.name}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Surname</f:facet>
+                #{doctor.surname}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Email</f:facet>
+                #{doctor.email}
+            </h:column>
+            <h:column>
+                <f:facet name="header">Max Patients</f:facet>
+                #{doctor.maxPatients}
+            </h:column>
+            <h:column>
+                <h:commandButton value="Edit" action="#{doctorJSFBean.prepareEdit(doctor)}" />
+                <h:commandButton value="Delete" action="#{doctorJSFBean.confirmDelete(doctor.id)}" />
+            </h:column>
+        </h:dataTable>
+    </h:form>
+
+    <h:panelGroup rendered="#{doctorJSFBean.selectedDoctorId != null}">
+        <div class="overlay">
+            <div class="dialog">
+                <p>Are you sure you want to delete this doctor?</p>
+                <h:form>
+                    <h:commandButton value="Yes"
+                                     action="#{doctorJSFBean.deleteConfirmedDoctor()}"
+                                     styleClass="delete-button"/>
+                    <h:commandButton value="No"
+                                     action="#{doctorJSFBean.cancelDelete()}"
+                                     styleClass="cancel-button"/>
+                </h:form>
+            </div>
+        </div>
+    </h:panelGroup>
+
+</h:body>
+</html>
